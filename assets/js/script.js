@@ -16,7 +16,7 @@ for (var i = 8; i <= 17; i++)  {
     </div>`);
 }
 
-//Color-code timeblocks based on past, present, and future times
+//Colour-code timeblocks based on past, present, and future times
 function updateHourBlocks()  {
     var currentHour = dayjs().hour();
     $(".time-block").each(function()  {
@@ -34,4 +34,25 @@ function updateHourBlocks()  {
     });
 }
 
+//Call updateHourBlocks initially to set colours.
+updateHourBlocks();
+
+//Updating timeblocks every minute to reflect current time
+setInterval(updateHourBlocks, 60000);
+
+//Allow users to enter events in each timeblock
+$(".time-block").each(function()  {
+    var hour = parseInt($(this).attr("id").split("-")[1]);
+    var savedEvent = localStorage.getItem("event-" + hour);
+    if (savedEvent)  {
+        $(this).find(".description").val(savedEvent);
+    }
+});
+
+//Save events to local storage
+$(".saveBtn").on("click", function()  {
+    var hour = parseInt($(this).parent().attr("id").split("-")[1]);
+    var eventText = $(this).siblings(".description").val().trim();
+    localStorage.setitem("event-" + hour, eventText);
+  })
 });
